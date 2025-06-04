@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grade 8 Substitution Quiz</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #bbdefb, #90caf9);
+    margin: 0;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #0d47a1;
+  }
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+  }
+  #question-box {
+    background: white;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 30px 40px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    font-size: 1.7rem;
+    font-weight: 600;
+    min-height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  input[type="text"] {
+    margin-top: 25px;
+    font-size: 1.5rem;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 3px solid #42a5f5;
+    width: 280px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #1565c0;
+  }
+  #submit-btn {
+    margin-top: 30px;
+    background-color: #1565c0;
+    border: none;
+    padding: 16px 42px;
+    border-radius: 14px;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 5px 15px rgba(21,101,192,0.5);
+    transition: background-color 0.3s ease;
+  }
+  #submit-btn:hover {
+    background-color: #0d3c7a;
+  }
+  #feedback {
+    margin-top: 28px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    min-height: 36px;
+    color: #1b5e20;
+  }
+  #score {
+    margin-top: 30px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0d47a1;
+  }
+</style>
+</head>
+<body>
+
+<h1>🧮 Grade 8 Substitution Quiz - 20 Questions</h1>
+
+<div id="question-box"></div>
+
+<input type="text" id="answer" placeholder="Type your answer here" autocomplete="off" />
+<button id="submit-btn">Submit Answer</button>
+<div id="feedback"></div>
+<div id="score">Score: 0 / 20</div>
+
+<script>
+  const questions = [
+    { q: "If x = 3, find 5x + 7", a: "22" },
+    { q: "If y = 4, find 2y - 5", a: "3" },
+    { q: "If a = 2, find 3a² + 1", a: "13" },
+    { q: "If b = 5, find 4b - 2", a: "18" },
+    { q: "If x = -1, find x² + 6x + 8", a: "3" },
+    { q: "If y = 0, find 7y + 9", a: "9" },
+    { q: "If a = 3, find 2a + a²", a: "15" },
+    { q: "If b = 4, find b² - 3b", a: "4" },
+    { q: "If x = 1, find 5(x + 2)", a: "15" },
+    { q: "If y = 2, find 3(y² - 1)", a: "9" },
+    { q: "If a = 5, find 4a - 2a", a: "10" },
+    { q: "If b = -3, find b² + 2b", a: "3" },
+    { q: "If x = 2, find (x + 3)²", a: "25" },
+    { q: "If y = -2, find y³ + y", a: "-10" },
+    { q: "If a = 1, find 6a + 4", a: "10" },
+    { q: "If b = 0, find 8b + 1", a: "1" },
+    { q: "If x = 4, find 3x² - x", a: "44" },
+    { q: "If y = 3, find 2y + y²", a: "15" },
+    { q: "If a = -2, find a² + 5a", a: "-6" },
+    { q: "If b = 1, find 7b - 4", a: "3" }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+
+  // Normalize answers for comparison (trim, lowercase, remove spaces)
+  function normalize(str) {
+    return str.trim().toLowerCase().replace(/\s+/g, '');
+  }
+
+  function showQuestion() {
+    if (currentQuestion >= questions.length) {
+      document.getElementById('question-box').textContent = "🎉 Congratulations! You completed the quiz.";
+      document.getElementById('feedback').textContent = `Your final score is ${score} out of 20.`;
+      document.getElementById('answer').style.display = 'none';
+      document.getElementById('submit-btn').style.display = 'none';
+      return;
+    }
+    const q = questions[currentQuestion].q;
+    document.getElementById('question-box').textContent = `Question ${currentQuestion + 1} of 20:\n\n${q}`;
+    document.getElementById('answer').value = '';
+    document.getElementById('feedback').textContent = '';
+  }
+
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const userAnswer = document.getElementById('answer').value;
+    if (!userAnswer.trim()) {
+      alert("Please enter your answer before submitting.");
+      return;
+    }
+    const correctAnswer = questions[currentQuestion].a;
+    if (normalize(userAnswer) === normalize(correctAnswer)) {
+      score++;
+      document.getElementById('feedback').textContent = "✅ Correct!";
+      document.getElementById('feedback').style.color = "#1b5e20";
+    } else {
+      document.getElementById('feedback').textContent = `❌ Incorrect. The correct answer is: ${correctAnswer}`;
+      document.getElementById('feedback').style.color = "#b71c1c";
+    }
+    currentQuestion++;
+    document.getElementById('score').textContent = `Score: ${score} / 20`;
+    setTimeout(showQuestion, 2000);
+  });
+
+  showQuestion();
+</script>
+
+</body>
+</html>
